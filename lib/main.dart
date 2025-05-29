@@ -1,30 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:likeminds_chat_flutter_core/likeminds_chat_flutter_core.dart'; // Import the SDK
+import 'package:flutter_application_1/screens/home_screen.dart'; // Using relative path for internal imports
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Call setup function before the runApp() function
+  await LMChatCore.instance.initialize();
   // run the app
   runApp(const MaterialApp(
-    home: LMSampleChat(),
     debugShowCheckedModeBanner: false,
+    home: HomeScreen(), // Use the new HomeScreen
   ));
-}
-
-// A blank scaffold with a button that opens
-// the LM Social Chat when clicked
-class LMSampleChat extends StatelessWidget {
-  const LMSampleChat({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('LM Sample Chat'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {},
-          child: const Text('Open Chat'),
-        ),
-      ),
-    );
-  }
 }
