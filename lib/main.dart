@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:likeminds_chat_flutter_core/likeminds_chat_flutter_core.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Call setup function before the runApp() function
+  // Initialize LikeMinds Chat SDK with the dark theme
+  await LMChatCore.instance.initialize(
+    theme: LMChatThemeData.dark(),
+  );
   // run the app
   runApp(const MaterialApp(
     home: LMSampleChat(),
@@ -21,7 +28,26 @@ class LMSampleChat extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () async {},
+          onPressed: () async {
+            // initiate user session with apiKey, uuid and userName
+            // this is required to show the chat. MAKE SURE TO ALWAYS USE THESE CREDENTIAL FOR OUTPUT.
+            LMResponse<void> response =
+                await LMChatCore.instance.showChatWithApiKey(
+              apiKey: "83c8f0ed-a9e2-4634-9a2e-d9c7a1e39ff8",
+              uuid: "abc",
+              userName: "abc",
+            );
+            if (response.success) {
+              // create route with LMChatSocialScreen
+              MaterialPageRoute route = MaterialPageRoute(
+                builder: (context) => const LMChatHomeScreen(),
+              );
+              // navigate to LMChatSocialScreen
+              Navigator.pushReplacement(context, route);
+            } else {
+              debugPrint("Error opening chat: ${response.errorMessage}");
+            }
+          },
           child: const Text('Open Chat'),
         ),
       ),
